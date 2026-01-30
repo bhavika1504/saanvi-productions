@@ -120,7 +120,7 @@
   }
 
   html {
-    scroll-behavior: smooth;
+    /* scroll-behavior: smooth; - Removed to rely on JS/Lenis for smoother control */
   }
 
   body {

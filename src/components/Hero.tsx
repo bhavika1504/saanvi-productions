@@ -88,23 +88,7 @@ export function Hero() {
       <motion.div className="relative z-10 section-container py-32" style={{ opacity }}>
         <div className="max-w-4xl mx-auto text-center">
           {/* Badge with bounce */}
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.8 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.6, type: 'spring', bounce: 0.5 }}
-            whileHover={{ scale: 1.05 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/20 border border-accent/30 backdrop-blur-sm mb-8 cursor-default"
-          >
-            <motion.div
-              animate={{ rotate: [0, 15, -15, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              <Sparkles className="w-4 h-4 text-accent" />
-            </motion.div>
-            <span className="text-sm font-medium text-accent">
-              Now Accepting Applications
-            </span>
-          </motion.div>
+         
 
           {/* Headline with letter animation */}
           <motion.h1

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Navbar } from '@/components/Navbar';
-import { Hero } from '@/components/Hero';
+import GHero from '@/components/GHero';
 import { Services } from '@/components/Services';
 import { Events } from '@/components/Events';
 import { CastingForm } from '@/components/CastingForm';
@@ -19,7 +19,7 @@ const Index = () => {
       <FloatingElements />
       <Navbar onAdminClick={() => setIsAdminModalOpen(true)} />
       <main className="relative z-10">
-        <Hero />
+        <GHero />
         <Services />
         <Events />
         <CastingForm />
