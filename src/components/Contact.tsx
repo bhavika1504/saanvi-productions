@@ -161,16 +161,16 @@ export function Contact() {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
           >
-            <div className="bg-primary rounded-3xl p-8 md:p-12 h-full flex flex-col justify-center relative overflow-hidden">
+            <div className="bg-black rounded-3xl p-8 md:p-12 h-full flex flex-col justify-center relative overflow-hidden border border-white/10">
               {/* Subtle background elements */}
               <div className="absolute top-0 right-0 w-64 h-64 bg-cta/5 rounded-full blur-3xl" />
               <div className="absolute bottom-0 left-0 w-48 h-48 bg-accent/5 rounded-full blur-3xl" />
 
               <div className="relative">
-                <h3 className="font-display text-3xl md:text-4xl font-bold text-primary-foreground mb-4">
+                <h3 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
                   Ready to Start Your Journey?
                 </h3>
-                <p className="text-primary-foreground/80 text-lg mb-8 leading-relaxed">
+                <p className="text-gray-300 text-lg mb-8 leading-relaxed">
                   Don't wait for your dreams to come true — take the first step today.
                   Apply for our upcoming auditions or join a workshop to hone your
                   skills.
@@ -186,7 +186,7 @@ export function Contact() {
                   </Button>
                   <Button
                     variant="outline"
-                    className="border-cta/40 text-cta hover:bg-cta/10 hover:border-cta transition-all duration-300"
+                    className="border-cta text-cta hover:bg-cta hover:text-white transition-all duration-300"
                     onClick={() => {
                       const element = document.getElementById('events');
                       if (element) element.scrollIntoView({ behavior: 'smooth' });
@@ -196,8 +196,8 @@ export function Contact() {
                   </Button>
                 </div>
 
-                <div className="mt-8 pt-8 border-t border-primary-foreground/10">
-                  <p className="text-primary-foreground/60 text-sm italic">
+                <div className="mt-8 pt-8 border-t border-white/10">
+                  <p className="text-gray-400 text-sm italic">
                     "We're here to guide you through your next step. Every star started
                     somewhere — let's start your story today."
                   </p>

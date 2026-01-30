@@ -55,25 +55,6 @@ export function About() {
                 performers — everyone deserves a chance to follow their dreams.
               </p>
             </div>
-
-            {/* Film strip divider */}
-            <div className="my-8 film-strip-divider rounded-full opacity-60" />
-
-            {/* Mission statement - simplified */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={isInView ? { opacity: 1 } : {}}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="p-6 bg-primary/5 border-l-4 border-cta rounded-r-xl"
-            >
-              <p className="text-foreground italic font-medium">
-                "Our mission is simple: to give every aspiring artist a fair chance to
-                showcase their talent and make their dreams come true."
-              </p>
-              <p className="text-sm text-muted-foreground mt-2">
-                — Team Saanvi Films
-              </p>
-            </motion.div>
           </motion.div>
 
           {/* Stats Grid - simplified, no bouncing */}
