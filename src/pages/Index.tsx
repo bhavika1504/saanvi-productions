@@ -3,7 +3,6 @@ import { Navbar } from '@/components/Navbar';
 import GHero from '@/components/GHero';
 import { Services } from '@/components/Services';
 import { Events } from '@/components/Events';
-import { CastingForm } from '@/components/CastingForm';
 import { Portfolio } from '@/components/Portfolio';
 import { About } from '@/components/About';
 import { Contact } from '@/components/Contact';
@@ -22,7 +21,6 @@ const Index = () => {
         <GHero />
         <Services />
         <Events />
-        <CastingForm />
         <Portfolio />
         <About />
         <Contact />

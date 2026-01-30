@@ -48,7 +48,7 @@ export function Navbar({ onAdminClick }: NavbarProps) {
     },
     { title: "Events", target: "/#events" },
     { title: "Our Work", target: "/#portfolio" },
-    { title: "Apply Now", target: "/#casting" },
+    { title: "Contact", target: "/#contact" },
   ];
 
   // Handle scroll effect
