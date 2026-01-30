@@ -30,7 +30,7 @@ export function AdminLoginModal({ isOpen, onClose }: AdminLoginModalProps) {
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
     setIsLoading(false);
-    toast.info('Admin authentication requires backend setup. Enable Lovable Cloud to proceed.');
+    toast.info('Admin authentication requires backend setup. Please configure Firebase or your preferred authentication service.');
   };
 
   return (

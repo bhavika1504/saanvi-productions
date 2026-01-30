@@ -97,8 +97,8 @@ export function Contact() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: index * 0.1, ease: 'easeOut' }}
                     className={`flex items-start gap-4 p-5 bg-card rounded-xl border transition-all duration-500 group ${item.highlight
-                        ? 'border-cta/30 hover:border-cta hover:shadow-lg'
-                        : 'border-border hover:shadow-md'
+                      ? 'border-cta/30 hover:border-cta hover:shadow-lg'
+                      : 'border-border hover:shadow-md'
                       }`}
                   >
                     {/* Studio Equipment Styled Icon */}
@@ -110,8 +110,8 @@ export function Contact() {
                         {item.label}
                       </div>
                       <div className={`font-medium transition-colors duration-300 ${item.highlight
-                          ? 'text-foreground text-lg group-hover:text-cta'
-                          : 'text-foreground group-hover:text-cta'
+                        ? 'text-foreground text-lg group-hover:text-cta'
+                        : 'text-foreground group-hover:text-cta'
                         }`}>
                         {item.value}
                       </div>
@@ -186,7 +186,7 @@ export function Contact() {
                   </Button>
                   <Button
                     variant="outline"
-                    className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 transition-all duration-300"
+                    className="border-cta/40 text-cta hover:bg-cta/10 hover:border-cta transition-all duration-300"
                     onClick={() => {
                       const element = document.getElementById('events');
                       if (element) element.scrollIntoView({ behavior: 'smooth' });

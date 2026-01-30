@@ -11,7 +11,7 @@ const workshops = [
     subtitle: 'Learn from Bollywood Veterans',
     date: '2024-02-15',
     time: '10:00 AM - 4:00 PM',
-    location: 'Saanvi Studios, Mumbai',
+    location: 'Saanvi Productions, Ahmedabad',
     description:
       'Dive deep into method acting techniques with industry professionals. Learn emotional preparation, character development, and scene analysis through hands-on practice.',
     image:
@@ -120,11 +120,10 @@ const talentHunts = [
 
 const allEvents = [...workshops, ...talentHunts];
 
-export default function Events() {
+export function Events() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
   const [activeTab, setActiveTab] = useState<'all' | 'workshops' | 'talent-hunts'>('all');
-  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [previewEvent, setPreviewEvent] = useState<any | null>(null);
 
   const getFilteredEvents = () => {
@@ -138,8 +137,8 @@ export default function Events() {
     }
   };
 
-  const topEvents = useMemo(() => {
-    return [...allEvents].sort((a, b) => (b.rating || 0) - (a.rating || 0)).slice(0, 3);
+  const topEvent = useMemo(() => {
+    return [...allEvents].sort((a, b) => (b.rating || 0) - (a.rating || 0))[0];
   }, []);
 
   const formatDate = (dateString: string) => {
@@ -154,163 +153,197 @@ export default function Events() {
   const getCategoryStyle = (category: string) => {
     switch (category) {
       case 'Talent Hunt':
-        return 'bg-gradient-to-r from-cta/20 to-cta/10 text-cta border-cta/30';
+        return 'bg-cta/10 text-cta border-cta/30';
       case 'Workshop':
-        return 'bg-gradient-to-r from-accent/20 to-accent/10 text-accent border-accent/30';
+        return 'bg-accent/10 text-accent border-accent/30';
       default:
-        return 'bg-gradient-to-r from-primary/20 to-primary/10 text-primary border-primary/30';
+        return 'bg-primary/10 text-primary border-primary/30';
     }
   };
 
   return (
-    <section id="events" ref={sectionRef} className="py-20 bg-gradient-to-b from-background via-secondary/10 to-background relative overflow-hidden">
+    <section id="events" ref={sectionRef} className="py-24 bg-background relative overflow-hidden">
+      {/* Background Decor */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cta/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2" />
+
       <div className="section-container relative">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="mb-8"
-        >
-          <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-2">Best Events</h2>
-          <p className="text-sm text-muted-foreground max-w-2xl">Top rated events handpicked for you — quick glance and fast actions.</p>
-        </motion.div>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6 }}
+          >
+            <span className="inline-block px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-cta bg-cta/10 rounded-full mb-4">
+              Coming Soon
+            </span>
+            <h2 className="font-display text-4xl md:text-6xl font-bold text-foreground">
+              Featured <span className="text-cta">Spotlight</span>
+            </h2>
+          </motion.div>
 
-        {/* Best Events Strip (horizontal scroll) */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={isInView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="flex gap-4 overflow-x-auto pb-4 mb-8 -mx-4 px-4"
-        >
-          {topEvents.map((ev) => (
-            <div key={ev.id} className="min-w-[230px] bg-card/80 backdrop-blur-sm rounded-xl border border-border/50 overflow-hidden shadow-sm">
-              <div className="relative h-28">
-                <img src={ev.image} alt={ev.title} className="w-full h-full object-cover" />
-                <div className="absolute top-2 left-2">
-                  <span className={`px-2 py-1 text-[10px] font-semibold rounded-full border ${getCategoryStyle(ev.category)}`}>
-                    {ev.category}
+          <motion.p
+            initial={{ opacity: 0, x: 20 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6 }}
+            className="text-muted-foreground max-w-md md:text-right"
+          >
+            Handpicked opportunities and masterclasses designed to elevate your career in the entertainment industry.
+          </motion.p>
+        </div>
+
+        {/* Spotlight Hero Event */}
+        {topEvent && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8 }}
+            className="group relative mb-24 cursor-pointer"
+            onClick={() => setPreviewEvent(topEvent)}
+          >
+            <div className="relative h-[400px] md:h-[500px] rounded-3xl overflow-hidden border border-border shadow-2xl">
+              <img
+                src={topEvent.image}
+                alt={topEvent.title}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+
+              <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
+                <div className="flex flex-wrap items-center gap-4 mb-6">
+                  <span className={`px-3 py-1 text-xs font-bold rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-white`}>
+                    {topEvent.category}
                   </span>
+                  <div className="flex items-center gap-1 text-amber-400 font-bold">
+                    <Star className="w-4 h-4 fill-current" />
+                    {topEvent.rating} • {topEvent.reviews} Reviews
+                  </div>
                 </div>
-                <div className="absolute top-2 right-2 flex gap-2">
-                  <button onClick={() => setPreviewEvent(ev)} aria-label={`View ${ev.title}`} className="bg-black/60 hover:bg-black/70 rounded-full p-2">
-                    <Eye className="w-4 h-4 text-white" />
-                  </button>
-                </div>
-              </div>
 
-              <div className="p-3">
-                <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-semibold line-clamp-2">{ev.title}</h4>
-                  <div className="text-xs font-bold text-primary">{ev.rating} ★</div>
+                <h3 className="text-4xl md:text-6xl font-bold text-white mb-4 line-clamp-2 text-shadow-premium">
+                  {topEvent.title}
+                </h3>
+
+                <div className="flex flex-wrap gap-6 text-white/80 mb-8">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-5 h-5 text-cta" />
+                    <span>{topEvent.date}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-5 h-5 text-cta" />
+                    <span>{topEvent.location}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Users className="w-5 h-5 text-cta" />
+                    <span>{topEvent.participants}</span>
+                  </div>
                 </div>
-                <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{ev.subtitle}</p>
+
+                <div className="flex flex-wrap gap-4">
+                  <Button className="bg-cta hover:bg-cta/90 text-white px-8 py-6 text-lg rounded-xl cta-glow">
+                    Register Now <ArrowRight className="ml-2 w-5 h-5" />
+                  </Button>
+                  <Button variant="outline" className="bg-white/5 border-white/20 text-white backdrop-blur-md hover:bg-white/10 px-8 py-6 text-lg rounded-xl">
+                    View Details
+                  </Button>
+                </div>
               </div>
             </div>
-          ))}
-        </motion.div>
+          </motion.div>
+        )}
 
-        {/* Filter Tabs */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.15 }}
-          className="flex justify-center mb-6"
-        >
-          <div className="inline-flex bg-card/50 backdrop-blur-sm rounded-2xl p-1 border border-border/50">
+        {/* Row Header & Filter */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-12">
+          <h3 className="font-display text-4xl md:text-6xl font-bold text-foreground">
+            Discover <span className="text-cta">Events</span>
+          </h3>
+
+          <div className="flex bg-secondary/30 backdrop-blur-sm rounded-xl p-1 border border-border/50 self-start">
             {[
-              { key: 'all', label: 'All Events', icon: Calendar },
+              { key: 'all', label: 'All', icon: Calendar },
               { key: 'workshops', label: 'Workshops', icon: Award },
               { key: 'talent-hunts', label: 'Talent Hunts', icon: Star },
             ].map(({ key, label, icon: Icon }) => (
               <button
                 key={key}
                 onClick={() => setActiveTab(key as any)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-medium transition-all duration-200 ${
-                  activeTab === key
-                    ? 'bg-cta text-cta-foreground shadow-sm'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-secondary/40'
-                }`}
+                className={`flex items-center gap-2 px-6 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${activeTab === key
+                  ? 'bg-white text-primary shadow-md'
+                  : 'text-muted-foreground hover:text-foreground'
+                  }`}
               >
                 <Icon className="w-4 h-4" />
                 {label}
               </button>
             ))}
           </div>
-        </motion.div>
+        </div>
 
-        {/* Compact Events Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
+        {/* Ticket-Inspired Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {getFilteredEvents().map((event, index) => {
-            const dateInfo = formatDate(event.date);
             const isWorkshop = event.category === 'Workshop';
 
             return (
               <motion.div
                 key={event.id}
-                initial={{ opacity: 0, y: 12 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.45, delay: 0.03 + index * 0.03 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="group"
-                onMouseEnter={() => setHoveredCard(event.id)}
-                onMouseLeave={() => setHoveredCard(null)}
               >
-                <div className="bg-card/80 backdrop-blur-sm rounded-lg overflow-hidden border border-border/50 hover:shadow-lg transition-transform duration-200">
-                  {/* compact header */}
-                  <div className="relative h-28 flex-shrink-0">
-                    <img src={event.image} alt={event.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-
-                    <div className="absolute top-2 left-2">
-                      <span className={`px-2 py-1 text-[11px] font-semibold rounded-full border ${getCategoryStyle(event.category)}`}>
+                <div className="film-ticket h-full flex flex-col hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+                  <div className="relative h-48 overflow-hidden rounded-t-lg">
+                    <img
+                      src={event.image}
+                      alt={event.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-black/20" />
+                    <div className="absolute top-4 left-4">
+                      <span className={`px-3 py-1 text-[10px] font-bold uppercase tracking-widest rounded-full border border-white/30 backdrop-blur-md text-white bg-black/40`}>
                         {event.category}
                       </span>
                     </div>
-
-                    <div className="absolute top-2 right-2 flex gap-2">
-                      <button onClick={() => setPreviewEvent(event)} aria-label={`View ${event.title}`} className="bg-black/60 hover:bg-black/70 rounded-full p-2">
-                        <Eye className="w-4 h-4 text-white" />
-                      </button>
-                    </div>
-
-                    <div className="absolute bottom-2 right-2">
-                      <div className={`px-2 py-1 rounded-full text-xs font-bold text-white ${event.price === 'Free Entry' ? 'bg-green-500' : 'bg-cta'}`}>
-                        {event.price}
-                      </div>
-                    </div>
                   </div>
 
-                  {/* compact body */}
-                  <div className="p-3 text-sm">
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-sm text-foreground line-clamp-2">{event.title}</h3>
-                        <p className="text-xs text-muted-foreground mt-1 line-clamp-1">{event.subtitle}</p>
+                  <div className="p-6 flex-1 flex flex-col border-x-2 border-dashed border-border/30">
+                    <div className="flex justify-between items-start gap-4 mb-4">
+                      <h4 className="font-display text-xl font-bold line-clamp-2 leading-tight text-cta">
+                        {event.title}
+                      </h4>
+                      <div className="flex items-center text-xs font-bold text-cta">
+                        {event.rating} ★
                       </div>
-                      <div className="text-xs text-primary font-bold">{event.rating} ★</div>
                     </div>
 
-                    <div className="mt-2 grid grid-cols-2 gap-2 text-xs text-muted-foreground">
-                      <div className="flex items-center gap-1">
-                        <Clock className="w-3 h-3 text-cta" />
-                        <span className="truncate">{event.duration}</span>
+                    <div className="space-y-3 mb-8 flex-1">
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <Calendar className="w-3.5 h-3.5 text-cta" />
+                        <span>{event.date} • {event.time}</span>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <Users className="w-3 h-3 text-primary" />
-                        <span className="truncate">{event.participants}</span>
-                      </div>
-                      <div className="flex items-center gap-1 col-span-2">
-                        <MapPin className="w-3 h-3 text-accent" />
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <MapPin className="w-3.5 h-3.5 text-cta" />
                         <span className="truncate">{event.location}</span>
                       </div>
                     </div>
 
-                    <div className="mt-3 flex gap-2">
-                      <Button className="flex-1 text-xs py-2 rounded-md">{isWorkshop ? 'Register' : 'Join Hunt'}</Button>
-                      <button onClick={() => setPreviewEvent(event)} aria-label={`Quick view ${event.title}`} className="px-3 py-2 rounded-md border border-border/50 text-xs bg-card/70">
-                        <Eye className="w-4 h-4" />
-                      </button>
+                    <div className="pt-6 border-t-2 border-dashed border-border/50 flex items-center justify-between gap-4">
+                      <div className="text-lg font-bold text-foreground">
+                        {event.price}
+                      </div>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => setPreviewEvent(event)}
+                          className="p-2.5 rounded-lg border border-border hover:bg-secondary transition-colors"
+                        >
+                          <Eye className="w-4 h-4 text-muted-foreground" />
+                        </button>
+                        <Button className="px-6 rounded-lg font-bold">
+                          {isWorkshop ? 'Book' : 'Join'}
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -322,49 +355,74 @@ export default function Events() {
 
       {/* Modal / Quick View */}
       {previewEvent && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/50" onClick={() => setPreviewEvent(null)} />
-          <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.18 }} className="relative max-w-3xl w-full bg-card/90 backdrop-blur-md rounded-xl border border-border/60 overflow-hidden">
-            <div className="relative h-44">
-              <img src={previewEvent.image} alt={previewEvent.title} className="w-full h-full object-cover" />
-              <div className="absolute top-3 right-3">
-                <button onClick={() => setPreviewEvent(null)} className="bg-black/60 rounded-full p-2">
-                  <X className="w-4 h-4 text-white" />
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="absolute inset-0 bg-black/80 backdrop-blur-md"
+            onClick={() => setPreviewEvent(null)}
+          />
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="relative max-w-4xl w-full bg-card rounded-2xl border border-border overflow-hidden shadow-2xl"
+          >
+            <div className="grid md:grid-cols-2">
+              <div className="relative h-64 md:h-auto">
+                <img src={previewEvent.image} alt={previewEvent.title} className="w-full h-full object-cover" />
+                <button
+                  onClick={() => setPreviewEvent(null)}
+                  className="absolute top-4 left-4 bg-black/50 backdrop-blur-md rounded-full p-2 hover:bg-black/70 transition-colors"
+                >
+                  <X className="w-5 h-5 text-white" />
                 </button>
               </div>
-            </div>
 
-            <div className="p-5">
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <h3 className="text-black font-bold">{previewEvent.title}</h3>
-                  <p className="text-xs text-muted-foreground mt-1">{previewEvent.subtitle} • {previewEvent.instructor || previewEvent.level}</p>
+              <div className="p-8 md:p-12 overflow-y-auto max-h-[80vh]">
+                <div className="flex items-center gap-3 mb-6">
+                  <span className={`px-4 py-1 text-xs font-bold rounded-full border ${getCategoryStyle(previewEvent.category)}`}>
+                    {previewEvent.category}
+                  </span>
+                  <div className="text-sm font-bold text-cta">{previewEvent.rating} ★ Rating</div>
                 </div>
-                <div className="text-sm font-bold text-primary">{previewEvent.rating} ★</div>
-              </div>
 
-              <p className="text-sm text-muted-foreground mt-3">{previewEvent.description}</p>
+                <h3 className="font-display text-3xl font-bold mb-4">{previewEvent.title}</h3>
+                <p className="text-muted-foreground mb-8 leading-relaxed">
+                  {previewEvent.description}
+                </p>
 
-              <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4" />
-                  <div>
-                    <div className="text-black text-muted-foreground">Date</div>
-                    <div className="font-medium text-black">{previewEvent.date} • {previewEvent.time}</div>
+                <div className="space-y-6 mb-10">
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-full bg-cta/10 flex items-center justify-center">
+                      <Calendar className="w-5 h-5 text-cta" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-muted-foreground uppercase tracking-wider">Date & Time</div>
+                      <div className="font-semibold">{previewEvent.date} • {previewEvent.time}</div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center">
+                      <MapPin className="w-5 h-5 text-accent" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-muted-foreground uppercase tracking-wider">Location</div>
+                      <div className="font-semibold">{previewEvent.location}</div>
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4" />
-                  <div>
-                    <div className="text-xs text-muted-foreground">Location</div>
-                    <div className="font-medium text-black">{previewEvent.location}</div>
-                  </div>
-                </div>
-              </div>
 
-              <div className="mt-6 flex items-center gap-3">
-                <Button className="px-6 py-2">{previewEvent.price === 'Free Entry' ? 'Reserve Spot' : `Book · ${previewEvent.price}`}</Button>
-                <Button className="px-6 py-2 variant-ghost" onClick={() => setPreviewEvent(null)}>Close</Button>
+                <div className="flex items-center justify-between gap-8 pt-8 border-t border-border">
+                  <div>
+                    <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Entry Fee</div>
+                    <div className="text-2xl font-bold">{previewEvent.price}</div>
+                  </div>
+                  <Button className="flex-1 py-6 text-lg rounded-xl cta-glow">
+                    Secure Spot Now
+                  </Button>
+                </div>
               </div>
             </div>
           </motion.div>
@@ -373,3 +431,4 @@ export default function Events() {
     </section>
   );
 }
+

@@ -70,7 +70,7 @@ const GHero = () => {
                 {word.split('').map((letter, letterIndex) => (
                   <span
                     key={letterIndex}
-                    className="inline-block text-gold-gradient"
+                    className="inline-block text-cta-gradient"
                     style={{
                       opacity: isLoaded ? 1 : 0,
                       transform: isLoaded
@@ -90,7 +90,7 @@ const GHero = () => {
 
         {/* Subtitle */}
         <p
-          className={`font-body text-xl md:text-2xl lg:text-3xl text-foreground/80 font-light tracking-wide-elegant text-white transition-all duration-1000 delay-[1200ms] ${isLoaded ? 'opacity-100 translate-y-0 blur-0' : 'opacity-0 translate-y-8 blur-sm'
+          className={`font-body text-xl md:text-2xl lg:text-3xl text-foreground/80 font-light tracking-wide-elegant text-white text-shadow-premium transition-all duration-1000 delay-[1200ms] ${isLoaded ? 'opacity-100 translate-y-0 blur-0' : 'opacity-0 translate-y-8 blur-sm'
             }`}
         >
           Where Stories Come to Life

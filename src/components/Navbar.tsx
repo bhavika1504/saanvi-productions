@@ -205,9 +205,9 @@ export function Navbar({ onAdminClick }: NavbarProps) {
                 className="h-11 md:h-12 w-auto object-contain"
               />
               <span
-                className="relative text-xl md:text-2xl font-black tracking-tight bg-clip-text text-transparent bg-[length:300%_300%] animate-[shimmer_5s_linear_infinite]"
+                className="relative text-xl md:text-2xl font-black tracking-tight bg-clip-text text-transparent bg-[length:300%_300%] animate-[shimmer_5s_linear_infinite] drop-shadow-sm"
                 style={{
-                  backgroundImage: `linear-gradient(135deg, #ffffff 0%, #ffffff 40%, var(--theme-primary) 50%, #ffffff 60%, #ffffff 100%)`,
+                  backgroundImage: `linear-gradient(135deg, var(--theme-primary) 0%, #ffffff 40%, var(--theme-primary) 50%, #ffffff 60%, var(--theme-primary) 100%)`,
                   transition: 'all 1s ease'
                 }}
               >
@@ -218,7 +218,7 @@ export function Navbar({ onAdminClick }: NavbarProps) {
 
           {/* Centered Floating Pill - Nav Links Only */}
           <motion.div
-            className="hidden md:flex items-center gap-1 px-2 py-2 bg-white/95 backdrop-blur-xl rounded-full shadow-xl shadow-black/10 border border-gray-200/50"
+            className="hidden md:flex items-center gap-1 px-2 py-2 bg-white/95 backdrop-blur-xl rounded-full shadow-2xl shadow-black/20 border border-gray-200/50"
             initial={{ opacity: 0, y: -10, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}

@@ -134,9 +134,7 @@ export function Footer() {
               © {new Date().getFullYear()} Saanvi Films & Production. All rights
               reserved.
             </p>
-            <p className="text-primary-foreground/60 text-sm flex items-center gap-1">
-              Made with <Heart className="w-4 h-4 text-cta fill-cta" /> in India
-            </p>
+
           </div>
         </div>
       </div>
