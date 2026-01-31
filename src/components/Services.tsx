@@ -10,7 +10,7 @@ const services = [
     title: 'Movie Productions',
     description: 'Full-length feature films with professional crews and equipment. From concept to screen, we handle every aspect of movie production.',
     color: 'cta',
-    image: 'https://images.unsplash.com/photo-1503095396549-807759245b35?w=400&h=300&fit=crop&crop=center',
+    image: '/MovieProductions.jpg',
     details: ['Script Development', 'Location Scouting', 'Professional Cast & Crew'],
   },
   {
@@ -19,7 +19,7 @@ const services = [
     title: 'Commercial Advertising',
     description: 'High-impact commercials that tell your brand story. We create memorable ads that connect with audiences and drive business results.',
     color: 'accent',
-    image: 'https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=400&h=300&fit=crop&crop=center',
+    image: '/Advertisement.jpg',
     details: ['Brand Consultation', 'Creative Concepts', 'Multi-Channel Distribution'],
   },
   {
@@ -28,7 +28,7 @@ const services = [
     title: 'Brand Photography',
     description: 'Professional photography that captures your brand essence. From product shots to lifestyle imagery, we create visuals that speak.',
     color: 'cta',
-    image: 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=400&h=300&fit=crop&crop=center',
+    image: '/Brandphoto.png',
     details: ['Product Photography', 'Lifestyle Shoots', 'Brand Guidelines'],
   },
   {
@@ -37,7 +37,7 @@ const services = [
     title: 'Web Series',
     description: 'Engaging episodic content designed for digital platforms. We help bring your series concept to life with compelling storytelling.',
     color: 'accent',
-    image: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=400&h=300&fit=crop&crop=center',
+    image: '/WebSeries.jpg',
     details: ['Series Planning', 'Episode Production', 'Platform Optimization'],
   },
   {
@@ -46,7 +46,7 @@ const services = [
     title: 'Short Films',
     description: 'Powerful storytelling in compact format. Perfect for festivals, social media, or showcasing creative concepts with maximum impact.',
     color: 'cta',
-    image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=400&h=300&fit=crop&crop=center',
+    image: '/ShortFilms.png',
     details: ['Concept Development', 'Festival Submissions', 'Creative Direction'],
   },
   {
@@ -55,7 +55,7 @@ const services = [
     title: 'Personal Grooming',
     description: 'Professional grooming and styling sessions. Learn how to present yourself confidently on camera and in auditions.',
     color: 'accent',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop&crop=center',
+    image: '/PersonalGrooming.jpg',
     details: ['Style Consultation', 'Camera Presence', 'Professional Etiquette'],
   },
   {
@@ -64,7 +64,7 @@ const services = [
     title: 'Acting Workshop',
     description: 'Comprehensive acting training from industry professionals. Develop your skills through practical exercises and real-world experience.',
     color: 'cta',
-    image: 'https://images.unsplash.com/photo-1503095396549-807759245b35?w=400&h=300&fit=crop&crop=center',
+    image: '/ActingWorkShops.jpeg',
     details: ['Method Acting', 'Scene Work', 'Audition Techniques'],
   },
 ];
@@ -169,7 +169,7 @@ export function Services() {
                       </p>
 
                       {/* Details list */}
-                      <div className="space-y-1 mb-6">
+                      {/* <div className="space-y-1 mb-6">
                         {service.details.map((detail, detailIndex) => (
                           <div key={detailIndex} className="flex items-center gap-2 text-xs text-muted-foreground">
                             <div className={`w-1 h-1 rounded-full ${
@@ -178,7 +178,7 @@ export function Services() {
                             {detail}
                           </div>
                         ))}
-                      </div>
+                      </div> */}
 
                       {/* Apply button */}
                       <button
