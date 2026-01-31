@@ -1,6 +1,12 @@
 import { motion } from 'framer-motion';
-import { MapPin, Phone, Mail, Instagram, Clock, ArrowRight, Mic, Camera, Video } from 'lucide-react';
+import { MapPin, Phone, Mail, Instagram, Clock, ArrowRight, Mic, Camera, Video, User, Send, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { useState } from 'react';
+import { toast } from 'sonner';
+import { submissionsService } from '@/lib/submissionsService';
 
 const contactInfo = [
   {
@@ -15,23 +21,23 @@ const contactInfo = [
     icon: Instagram,
     studioIcon: Camera,
     label: 'Instagram',
-    value: '@saanvifilms',
-    href: 'https://instagram.com/saanvifilms',
+    value: '@saanviproduction',
+    href: 'https://instagram.com/saanviproduction',
     highlight: true,
   },
   {
     icon: MapPin,
     studioIcon: Video,
     label: 'Office Address',
-    value: 'Saanvi Studios, Andheri West, Mumbai - 400053',
+    value: 'Saanvi Productions, B-2/802/8th floor, West Gate Business Bay, SG Highway, Nr.Croma, Makarba, Ahmedabad, Gujarat',
     href: 'https://maps.google.com',
   },
   {
     icon: Mail,
     studioIcon: Mail,
     label: 'Email',
-    value: 'info@saanvifilms.com',
-    href: 'mailto:info@saanvifilms.com',
+    value: 'saanviproductionhelp@gmail.com',
+    href: 'mailto:saanviproductionhelp@gmail.com',
   },
 ];
 
@@ -42,11 +48,33 @@ const businessHours = [
 ];
 
 export function Contact() {
-  const scrollToCasting = () => {
-    const element = document.getElementById('casting');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      await submissionsService.addSubmission(formData);
+      toast.success("Message sent! Our casting directors will review your profile.");
+      setFormData({ name: '', email: '', phone: '', message: '' });
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to send message. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -63,20 +91,19 @@ export function Contact() {
           transition={{ duration: 0.8, ease: 'easeOut' }}
           className="text-center mb-16"
         >
-          <span className="inline-block px-4 py-1.5 text-sm font-medium text-accent-foreground bg-accent/20 rounded-full mb-4">
-            📞 Get in Touch
+          <span className="inline-block px-4 py-1.5 text-sm font-medium text-cta bg-cta/10 rounded-full mb-4">
+            🎬 Direct Casting Line
           </span>
           <h2 className="font-display text-4xl sm:text-5xl font-bold text-foreground mb-4">
             Let's <span className="text-cta">Connect</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Have questions about auditions or workshops? We're here to guide you through
-            your next step in entertainment.
+            Ready to start your journey? Fill out the form below and our casting directors will get in touch.
           </p>
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-12">
-          {/* Contact Info */}
+          {/* Left Side: Contact Info & Hours */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -137,7 +164,7 @@ export function Contact() {
               <div className="flex items-center gap-3 mb-4">
                 <Clock className="w-5 h-5 text-cta" />
                 <h3 className="font-display text-lg font-semibold text-foreground">
-                  Business Hours
+                  Casting Office Hours
                 </h3>
               </div>
               <div className="space-y-2">
@@ -154,56 +181,103 @@ export function Contact() {
             </motion.div>
           </motion.div>
 
-          {/* CTA Card */}
+          {/* Right Side: Contact Form */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
+            className="bg-black rounded-3xl p-8 border border-border/50 shadow-xl relative overflow-hidden"
           >
-            <div className="bg-black rounded-3xl p-8 md:p-12 h-full flex flex-col justify-center relative overflow-hidden border border-white/10">
-              {/* Subtle background elements */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-cta/5 rounded-full blur-3xl" />
-              <div className="absolute bottom-0 left-0 w-48 h-48 bg-accent/5 rounded-full blur-3xl" />
+            {/* Design accents */}
+            <div className="absolute -top-12 -right-12 w-32 h-32 bg-cta/5 rounded-full blur-2xl" />
+            <div className="absolute -bottom-12 -left-12 w-32 h-32 bg-accent/5 rounded-full blur-2xl" />
 
-              <div className="relative">
-                <h3 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
-                  Ready to Start Your Journey?
-                </h3>
-                <p className="text-gray-300 text-lg mb-8 leading-relaxed">
-                  Don't wait for your dreams to come true — take the first step today.
-                  Apply for our upcoming auditions or join a workshop to hone your
-                  skills.
-                </p>
+            <form onSubmit={handleSubmit} className="space-y-6 relative ">
+              <div className="space-y-2">
+                <Label htmlFor="name" className="text-sm font-semibold text-foreground text-white flex items-center gap-2">
+                  <User className="w-4 h-4 text-cta" /> Full Name
+                </Label>
+                <Input
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="Enter your name"
+                  className="bg-background border-border focus:border-cta focus:ring-cta h-12"
+                  required
+                />
+              </div>
 
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button
-                    onClick={scrollToCasting}
-                    className="bg-cta hover:bg-cta/90 text-cta-foreground cta-glow transition-all duration-300"
-                  >
-                    Apply Now
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="border-cta text-cta hover:bg-cta hover:text-white transition-all duration-300"
-                    onClick={() => {
-                      const element = document.getElementById('events');
-                      if (element) element.scrollIntoView({ behavior: 'smooth' });
-                    }}
-                  >
-                    View Workshops
-                  </Button>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-sm font-semibold text-foreground text-white flex items-center gap-2">
+                    <Mail className="w-4 h-4 text-cta" /> Email Address
+                  </Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="name@example.com"
+                    className="bg-background border-border focus:border-cta focus:ring-cta h-12"
+                    required
+                  />
                 </div>
-
-                <div className="mt-8 pt-8 border-t border-white/10">
-                  <p className="text-gray-400 text-sm italic">
-                    "We're here to guide you through your next step. Every star started
-                    somewhere — let's start your story today."
-                  </p>
+                <div className="space-y-2">
+                  <Label htmlFor="phone" className="text-sm font-semibold text-foreground text-white flex items-center gap-2">
+                    <Phone className="w-4 h-4 text-cta" /> Contact No
+                  </Label>
+                  <Input
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    placeholder="+91 00000 00000"
+                    className="bg-background border-border focus:border-cta focus:ring-cta h-12"
+                    required
+                  />
                 </div>
               </div>
-            </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="message" className="text-sm font-semibold text-foreground text-white flex items-center gap-2">
+                  <Mic className="w-4 h-4 text-cta" /> Your Message / Query
+                </Label>
+                <Textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  placeholder="Tell us about yourself or your query..."
+                  className="bg-background border-border focus:border-cta focus:ring-cta min-h-[120px] pt-4"
+                  required
+                />
+              </div>
+
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-cta hover:bg-cta/90 text-white h-14 text-lg font-bold rounded-xl cta-glow transition-all duration-300"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                    Sending Clip...
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-5 h-5 mr-2" />
+                    Send Message
+                  </>
+                )}
+              </Button>
+
+              <p className="text-xs text-center text-muted-foreground mt-4">
+                By clicking Send, you agree to our contact terms and casting guidelines.
+              </p>
+            </form>
           </motion.div>
         </div>
       </div>

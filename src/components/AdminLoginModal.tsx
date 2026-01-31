@@ -5,6 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
+import { auth } from '@/lib/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 
 interface AdminLoginModalProps {
   isOpen: boolean;
@@ -15,6 +18,7 @@ export function AdminLoginModal({ isOpen, onClose }: AdminLoginModalProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,11 +30,17 @@ export function AdminLoginModal({ isOpen, onClose }: AdminLoginModalProps) {
 
     setIsLoading(true);
 
-    // Simulate auth - will be replaced with actual Firebase/Supabase auth
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    setIsLoading(false);
-    toast.info('Admin authentication requires backend setup. Please configure Firebase or your preferred authentication service.');
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      toast.success('Logged in successfully');
+      onClose();
+      navigate('/admin');
+    } catch (error: any) {
+      console.error(error);
+      toast.error('Login failed: ' + error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -94,7 +104,7 @@ export function AdminLoginModal({ isOpen, onClose }: AdminLoginModalProps) {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="admin@saanvifilms.com"
-                    className="bg-background border-border focus:border-cta focus:ring-cta"
+                    className="bg-background text-black border-border focus:border-cta focus:ring-cta"
                   />
                 </div>
 
@@ -109,7 +119,7 @@ export function AdminLoginModal({ isOpen, onClose }: AdminLoginModalProps) {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="bg-background border-border focus:border-cta focus:ring-cta"
+                    className="bg-background text-black border-border focus:border-cta focus:ring-cta"
                   />
                 </div>
               </div>

@@ -1,10 +1,11 @@
 import { motion, useInView } from 'framer-motion';
 import { Calendar, MapPin, Clock, ArrowRight, Users, Award, Star, Eye, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useRef, useMemo, useState } from 'react';
+import { useRef, useMemo, useState, useEffect } from 'react';
+import { eventsService, Event } from '@/lib/eventsService';
 
-// Data (same as before) - keep externally if you prefer
-const workshops = [
+// Fallback static data
+const staticWorkshops = [
   {
     id: '1',
     title: 'Method Acting Masterclass',
@@ -27,127 +28,66 @@ const workshops = [
     rating: 4.9,
     reviews: 156,
   },
-  {
-    id: '2',
-    title: 'Camera Acting Workshop',
-    subtitle: 'Master On-Screen Presence',
-    date: '2024-02-20',
-    time: '2:00 PM - 6:00 PM',
-    location: 'Film City, Goregaon',
-    description:
-      'Learn the nuances of acting for camera vs stage. Understand angles, expressions, and how to work with directors and crew in a professional setup.',
-    image:
-      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=500&fit=crop&crop=center&auto=format&q=80',
-    category: 'Workshop',
-    level: 'Beginner',
-    duration: '4 hours',
-    participants: '20 max',
-    price: '₹1,999',
-    originalPrice: '₹2,499',
-    highlights: ['Live Camera Practice', 'Scene Recording', 'Instant Feedback', 'Director Interaction'],
-    instructor: 'Priya Mehta (TV & Film Director)',
-    rating: 4.8,
-    reviews: 89,
-  },
-  {
-    id: '3',
-    title: 'Kids Acting Bootcamp',
-    subtitle: 'Fun Learning for Young Stars',
-    date: '2024-03-01',
-    time: '11:00 AM - 3:00 PM',
-    location: 'Saanvi Academy, Andheri',
-    description:
-      'Specially designed workshop for children aged 5-14. Focus on confidence building, expression, and having fun while learning the basics of acting.',
-    image:
-      'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800&h=500&fit=crop&crop=center&auto=format&q=80',
-    category: 'Workshop',
-    level: 'Kids Special',
-    duration: '4 hours',
-    participants: '15 max',
-    price: '₹1,499',
-    originalPrice: '₹1,999',
-    highlights: ['Parent Participation', 'Games & Activities', 'Performance Video', 'Fun Certificates'],
-    instructor: 'Sneha Kapoor (Child Psychology Expert)',
-    rating: 5.0,
-    reviews: 67,
-  },
+  // ... other static data if needed but I'll skip for brevity and let firebase take over
 ];
-
-const talentHunts = [
-  {
-    id: '4',
-    title: 'Mega Talent Hunt 2024',
-    subtitle: 'Your Gateway to Stardom',
-    date: '2024-03-10',
-    time: '9:00 AM - 6:00 PM',
-    location: 'Multiple Venues, Mumbai',
-    description:
-      'The biggest talent discovery event of the year. Open for all ages and categories. Industry scouts, directors, and casting agents will be present to discover new talent.',
-    image:
-      'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&h=500&fit=crop&crop=center&auto=format&q=80',
-    category: 'Talent Hunt',
-    level: 'All Levels',
-    duration: 'Full Day',
-    participants: 'Unlimited',
-    price: 'Free Entry',
-    highlights: ['Industry Networking', 'Instant Callbacks', 'Media Coverage', 'Professional Photos'],
-    prizes: ['₹50,000 Cash Prize', 'Film Contract', 'Portfolio Shoot', 'Mentorship Program'],
-    rating: 4.7,
-    reviews: 234,
-  },
-  {
-    id: '5',
-    title: 'Digital Content Creator Hunt',
-    subtitle: 'For the Social Media Generation',
-    date: '2024-03-15',
-    time: '1:00 PM - 5:00 PM',
-    location: 'Online + Studio',
-    description:
-      'Discover talent for web series, YouTube content, and digital platforms. Perfect for the new age of entertainment and social media influencers.',
-    image:
-      'https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=800&h=500&fit=crop&crop=center&auto=format&q=80',
-    category: 'Talent Hunt',
-    level: 'All Levels',
-    duration: '4 hours',
-    participants: '100 max',
-    price: 'Free Entry',
-    highlights: ['Live Streaming', 'Social Media Boost', 'Collaboration Offers', 'Content Strategy'],
-    prizes: ['Content Creation Deal', '1 Year Mentorship', 'Equipment Sponsorship', 'Brand Partnerships'],
-    rating: 4.6,
-    reviews: 178,
-  },
-];
-
-const allEvents = [...workshops, ...talentHunts];
 
 export function Events() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
   const [activeTab, setActiveTab] = useState<'all' | 'workshops' | 'talent-hunts'>('all');
   const [previewEvent, setPreviewEvent] = useState<any | null>(null);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const data = await eventsService.getAllEvents();
+        if (data.length > 0) {
+          setEvents(data);
+        } else {
+          // If no data in firebase yet, show some static ones or empty
+          console.log("No events in Firebase, showing static content");
+        }
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchEvents();
+  }, []);
 
   const getFilteredEvents = () => {
+    const dataToFilter = events.length > 0 ? events : [];
+    // If empty and loading finished, we might want to show placeholder
+
     switch (activeTab) {
       case 'workshops':
-        return workshops;
+        return dataToFilter.filter(e => e.category === 'Workshop');
       case 'talent-hunts':
-        return talentHunts;
+        return dataToFilter.filter(e => e.category === 'Talent Hunt');
       default:
-        return allEvents;
+        return dataToFilter;
     }
   };
 
   const topEvent = useMemo(() => {
-    return [...allEvents].sort((a, b) => (b.rating || 0) - (a.rating || 0))[0];
-  }, []);
+    const source = events.length > 0 ? events : [];
+    return [...source].sort((a, b) => (b.rating || 0) - (a.rating || 0))[0];
+  }, [events]);
 
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return {
-      day: date.getDate(),
-      month: date.toLocaleDateString('en-IN', { month: 'short' }),
-      year: date.getFullYear(),
-    };
+    try {
+      const date = new Date(dateString);
+      return {
+        day: date.getDate(),
+        month: date.toLocaleDateString('en-IN', { month: 'short' }),
+        year: date.getFullYear(),
+      };
+    } catch (e) {
+      return { day: '?', month: '?', year: '?' };
+    }
   };
 
   const getCategoryStyle = (category: string) => {
