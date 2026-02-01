@@ -242,8 +242,8 @@ export function Contact() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="message" className="text-sm font-semibold text-foreground text-white flex items-center gap-2">
-                  <Mic className="w-4 h-4 text-cta" /> Your Message / Query
+                <Label htmlFor="message" className="text-sm font-semibold text-foreground text-black flex items-center gap-2">
+                  <Mic className="w-4 h-4 text-black" /> Your Message / Query
                 </Label>
                 <Textarea
                   id="message"
@@ -251,7 +251,7 @@ export function Contact() {
                   value={formData.message}
                   onChange={handleChange}
                   placeholder="Tell us about yourself or your query..."
-                  className="bg-background border-border focus:border-cta focus:ring-cta min-h-[120px] pt-4"
+                  className="bg-background border-border focus:border-cta text-black focus:ring-cta min-h-[120px] pt-4"
                   required
                 />
               </div>
