@@ -13,8 +13,8 @@ const contactInfo = [
     icon: Phone,
     studioIcon: Mic,
     label: 'Phone Number',
-    value: '+91 98765 43210',
-    href: 'tel:+919876543210',
+    value: '+91 9904024100',
+    href: 'tel:+919904024100',
     highlight: true,
   },
   {
@@ -234,7 +234,7 @@ export function Contact() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    placeholder="+91 00000 00000"
+                    placeholder="+91 99040 24100"
                     className="bg-background border-border focus:border-cta focus:ring-cta h-12"
                     required
                   />

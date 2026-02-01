@@ -103,9 +103,9 @@ export function Footer() {
                 Contact
               </h4>
               <div className="space-y-1">
-                <a href="tel:+919909210605" className="flex items-center gap-1.5 text-gray-400 hover:text-cta transition-colors duration-300 text-xs group">
+                <a href="tel:+919904024100" className="flex items-center gap-1.5 text-gray-400 hover:text-cta transition-colors duration-300 text-xs group">
                   <Phone className="w-3 h-3" />
-                  <span>+91 98765 43210</span>
+                  <span>+91 99092 10605</span>
                 </a>
                 <a href="mailto:saanviproductionhelp@gmail.com" className="flex items-center gap-1.5 text-gray-400 hover:text-cta transition-colors duration-300 text-xs group">
                   <Mail className="w-3 h-3" />
@@ -122,7 +122,9 @@ export function Footer() {
 
         {/* Ultra Compact Bottom Bar - Centered Copyright */}
         <div className="py-3 border-t border-white/10">
-
+          <p className="text-gray-500 text-xs text-center">
+            © {new Date().getFullYear()} Saanvi Films & Production. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>

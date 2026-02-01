@@ -10,8 +10,8 @@ import {
     Timestamp,
     serverTimestamp
 } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { db, storage } from "./firebase";
+import { db } from "./firebase";
+import { cloudinaryService } from "./cloudinaryService";
 
 export interface Event {
     id?: string;
@@ -21,7 +21,7 @@ export interface Event {
     date: string;
     time: string;
     location: string;
-    image: string;
+    image: string; // Now stores Cloudinary URL
     category: "Workshop" | "Talent Hunt" | "Production";
     level?: string;
     duration?: string;
@@ -75,10 +75,13 @@ export const eventsService = {
         await deleteDoc(docRef);
     },
 
-    // Upload image to Firebase Storage
+    // Upload event image to Cloudinary
     async uploadEventImage(file: File): Promise<string> {
-        const storageRef = ref(storage, `event-images/${Date.now()}_${file.name}`);
-        const snapshot = await uploadBytes(storageRef, file);
-        return await getDownloadURL(snapshot.ref);
+        return await cloudinaryService.uploadEventImage(file);
+    },
+
+    // Upload casting application photos to Cloudinary
+    async uploadCastingPhoto(file: File): Promise<string> {
+        return await cloudinaryService.uploadCastingPhoto(file);
     }
 };

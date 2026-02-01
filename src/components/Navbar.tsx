@@ -331,7 +331,7 @@ export function Navbar({ onAdminClick }: NavbarProps) {
             >
               <User size={20} />
             </button>
-            <a href="tel:9909210605">
+            <a href="tel:9904024100">
               <motion.div
                 className="
                   group relative inline-flex items-center gap-2 px-5 py-2.5
@@ -574,7 +574,7 @@ export function Navbar({ onAdminClick }: NavbarProps) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.4 }}
               >
-                <a href="tel:9909210605" onClick={closeMobileMenu}>
+                <a href="tel:9904024100" onClick={closeMobileMenu}>
                   <motion.div
                     className="w-full py-4 px-8 rounded-full bg-gradient-to-r from-[#ff4d31] to-[#ff6b4d] text-white text-center text-lg font-semibold shadow-lg shadow-[#ff4d31]/30 flex items-center justify-center gap-3"
                     whileHover={{ scale: 1.02, boxShadow: "0 20px 40px rgba(255, 77, 49, 0.4)" }}

@@ -28,7 +28,7 @@ export function About() {
             transition={{ duration: 0.8, ease: 'easeOut' }}
           >
             <span className="inline-flex items-center gap-2 px-4 py-1.5 text-sm font-medium text-accent-foreground bg-accent/20 rounded-full mb-4">
-              🎥 Who We Are
+              Who We Are
             </span>
 
             <h2 className="font-display text-4xl sm:text-5xl font-bold text-foreground mb-6">
@@ -57,8 +57,8 @@ export function About() {
             </div>
           </motion.div>
 
-          {/* Stats Grid - simplified, no bouncing */}
-          <div className="grid grid-cols-2 gap-6">
+          {/* Stats Grid - clean professional design */}
+          <div className="grid grid-cols-2 gap-4">
             {stats.map((stat, index) => {
               const Icon = stat.icon;
               return (
@@ -71,21 +71,23 @@ export function About() {
                     delay: 0.3 + index * 0.1,
                     ease: 'easeOut',
                   }}
-                  className="group"
+                  className="group relative"
                 >
-                  <div className="bg-card rounded-2xl p-6 border border-border h-full transition-all duration-500 hover:shadow-lg hover:-translate-y-1">
-                    <div
-                      className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors duration-500 ${index % 2 === 0
-                          ? 'bg-cta/10 text-cta group-hover:bg-cta group-hover:text-cta-foreground'
-                          : 'bg-accent/20 text-accent-foreground group-hover:bg-accent'
-                        }`}
-                    >
-                      <Icon className="w-6 h-6" />
+                  <div className="bg-card/50 backdrop-blur-sm rounded-xl p-5 border border-border/50 h-full transition-all duration-300 hover:border-cta/30 hover:bg-card">
+                    {/* Icon in top right corner */}
+                    <div className="absolute top-4 right-4 opacity-20 group-hover:opacity-40 transition-opacity duration-300">
+                      <Icon className="w-8 h-8 text-cta" />
                     </div>
-                    <div className="font-display text-3xl font-bold text-foreground mb-1">
-                      {stat.value}
+                    
+                    {/* Value and label */}
+                    <div className="relative">
+                      <div className="font-display text-4xl font-bold text-foreground mb-1.5 tracking-tight">
+                        {stat.value}
+                      </div>
+                      <div className="text-sm font-medium text-muted-foreground leading-tight">
+                        {stat.label}
+                      </div>
                     </div>
-                    <div className="text-sm text-muted-foreground">{stat.label}</div>
                   </div>
                 </motion.div>
               );

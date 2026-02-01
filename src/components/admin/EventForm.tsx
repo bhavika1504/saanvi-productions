@@ -3,22 +3,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
     X,
     Upload,
-    Save,
     Loader2,
     Calendar,
     MapPin,
     Tag,
     Plus,
-    Film,
-    Clapperboard,
     Clock,
     DollarSign,
     Users,
     Trash2,
-    CheckCircle2,
     Star,
     Award,
-    UserCircle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -73,8 +68,22 @@ export function EventForm({ event, onClose, onSuccess }: EventFormProps) {
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
+
+            // Validate file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                toast.error('Image size must be less than 5MB');
+                return;
+            }
+
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                toast.error('Please upload an image file');
+                return;
+            }
+
             setImageFile(file);
             setImagePreview(URL.createObjectURL(file));
+            toast.success('Image selected! Click "Add Event" to upload.');
         }
     };
 
@@ -101,9 +110,17 @@ export function EventForm({ event, onClose, onSuccess }: EventFormProps) {
         try {
             let imageUrl = formData.image;
             if (imageFile) {
-                console.log("Uploading new image...");
-                imageUrl = await eventsService.uploadEventImage(imageFile);
-                console.log("Image uploaded, URL:", imageUrl);
+                console.log("Uploading image to Cloudinary...");
+                toast.loading('Uploading image...', { id: 'image-upload' });
+                try {
+                    imageUrl = await eventsService.uploadEventImage(imageFile);
+                    console.log("Image uploaded to Cloudinary, URL:", imageUrl);
+                    toast.success('Image uploaded successfully!', { id: 'image-upload' });
+                } catch (uploadError: any) {
+                    console.error("Image upload error:", uploadError);
+                    toast.error('Image upload failed: ' + uploadError.message, { id: 'image-upload' });
+                    throw uploadError;
+                }
             }
 
             // Parse numbers before saving
@@ -142,53 +159,71 @@ export function EventForm({ event, onClose, onSuccess }: EventFormProps) {
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="w-full bg-zinc-950 border border-zinc-800 rounded-[2rem] shadow-[0_30px_100px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col max-h-[90vh]"
-        >
+
+          className="w-full max-h-[95vh] bg-zinc-950 border border-zinc-800 rounded-2xl sm:rounded-3xl md:rounded-[2rem] shadow-[0_30px_100px_rgba(0,0,0,0.8)] flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+            >
+
+
             {/* Header */}
-            <div className="flex items-center justify-between p-6 md:p-8 bg-zinc-900 border-b border-zinc-800 shrink-0">
-                <div className="flex items-center gap-4">
-                    <div className="p-2.5 bg-cta/10 rounded-xl border border-cta/20">
-                        <Calendar className="w-6 h-6 text-cta" />
+            <div className="flex items-center justify-between p-4 sm:p-6 md:p-8 bg-zinc-900 border-b border-zinc-800 shrink-0">
+                <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                    <div className="p-2 sm:p-2.5 bg-cta/10 rounded-xl border border-cta/20 shrink-0">
+                        <Calendar className="w-5 h-5 sm:w-6 sm:h-6 text-cta" />
                     </div>
-                    <div>
-                        <h2 className="text-xl md:text-2xl font-bold font-display tracking-tight text-white uppercase">
+                    <div className="min-w-0">
+                        <h2 className="text-lg sm:text-xl md:text-2xl font-bold font-display tracking-tight text-white uppercase truncate">
                             {event ? 'Edit Event' : 'New Event'}
                         </h2>
-                        <p className="text-zinc-500 text-xs mt-0.5">EVENT STATUS: {event ? 'UPDATING' : 'READY TO POST'}</p>
+                        <p className="text-zinc-500 text-[10px] sm:text-xs mt-0.5 hidden sm:block">EVENT STATUS: {event ? 'UPDATING' : 'READY TO POST'}</p>
                     </div>
                 </div>
                 <button
                     onClick={onClose}
-                    className="p-2 hover:bg-zinc-800 rounded-full transition-colors text-zinc-400 hover:text-white"
+                    className="p-2 hover:bg-zinc-800 rounded-full transition-colors text-zinc-400 hover:text-white shrink-0"
                 >
-                    <X className="w-6 h-6" />
+                    <X className="w-5 h-5 sm:w-6 sm:h-6" />
                 </button>
             </div>
 
             {/* Scrollable Body */}
-            <div className="flex-1 overflow-y-auto custom-scrollbar p-6 md:p-10">
-                <form id="production-form" onSubmit={handleSubmit} className="space-y-12">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16">
+            <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 md:p-8 lg:p-10 touch-pan-y overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
+                <form id="production-form" onSubmit={handleSubmit} className="space-y-8 sm:space-y-10 md:space-y-12">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16">
 
                         {/* Column 1: Media & Technicals */}
-                        <div className="space-y-10">
+                        <div className="space-y-6 sm:space-y-8 md:space-y-10">
                             {/* Poster Upload */}
                             <div className="space-y-4">
                                 <Label className="text-zinc-400 font-black uppercase text-[11px] tracking-widest block pl-1">
                                     Visual Assets/Poster
                                 </Label>
-                                <div className="relative group aspect-[11/14] max-w-[320px] mx-auto lg:mx-0 rounded-[2rem] overflow-hidden border-2 border-dashed border-zinc-800 hover:border-cta/40 transition-all duration-500 bg-zinc-900/50 shadow-inner flex flex-col items-center justify-center cursor-pointer">
+                                <div className="relative group aspect-[11/14] max-w-[320px] mx-auto lg:mx-0 rounded-[2rem] overflow-hidden border-2 border-dashed border-zinc-800 hover:border-cta/40 transition-all duration-500 bg-zinc-900/50 shadow-inner flex flex-col items-center justify-center">
                                     {imagePreview ? (
-                                        <img src={imagePreview} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                                        <>
+                                            <img src={imagePreview} alt="Preview" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                <div className="text-center text-white">
+                                                    <Upload className="w-8 h-8 mx-auto mb-2" />
+                                                    <p className="text-xs font-bold uppercase">Change Image</p>
+                                                </div>
+                                            </div>
+                                        </>
                                     ) : (
-                                        <div className="text-center p-8 space-y-4">
+                                        <div className="text-center p-8 space-y-4 pointer-events-none">
                                             <div className="w-16 h-16 bg-zinc-800 rounded-full flex items-center justify-center mx-auto group-hover:bg-cta/20 transition-colors">
                                                 <Upload className="w-8 h-8 text-zinc-600 group-hover:text-cta" />
                                             </div>
                                             <p className="text-xs font-bold text-zinc-500 uppercase tracking-tighter">Upload Asset</p>
                                         </div>
                                     )}
-                                    <input type="file" accept="image/*" onChange={handleImageChange} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
+                                    <input 
+                                        type="file" 
+                                        accept="image/*" 
+                                        onChange={handleImageChange} 
+                                        className="absolute inset-0 opacity-0 cursor-pointer z-20 w-full h-full"
+                                        title="Upload image"
+                                    />
                                 </div>
                             </div>
 
@@ -257,7 +292,7 @@ export function EventForm({ event, onClose, onSuccess }: EventFormProps) {
                         </div>
 
                         {/* Column 2: Content & Logistics */}
-                        <div className="space-y-10">
+                        <div className="space-y-6 sm:space-y-8 md:space-y-10">
                             {/* Primary Info */}
                             <div className="space-y-6">
                                 <div className="relative group">
@@ -323,7 +358,7 @@ export function EventForm({ event, onClose, onSuccess }: EventFormProps) {
                             <div className="space-y-8">
                                 <div className="space-y-4">
                                     <div className="flex items-center justify-between">
-                                        <Label className="text-[11px] font-black text-zinc-500 uppercase tracking-widest pl-1">Highlights</Label>
+                                        <Label className="text-[11px] font-black text-white uppercase tracking-widest pl-1">Highlights</Label>
                                         <Button type="button" variant="outline" size="sm" onClick={() => addArrayItem('highlights')} className="h-7 text-[9px] bg-cta/10 border-cta/20 text-cta hover:bg-cta hover:text-white rounded-full">
                                             <Plus className="w-3 h-3 mr-1" /> ADD POINT
                                         </Button>
@@ -331,8 +366,8 @@ export function EventForm({ event, onClose, onSuccess }: EventFormProps) {
                                     <div className="space-y-3">
                                         {formData.highlights?.map((h, i) => (
                                             <div key={i} className="flex gap-2">
-                                                <Input value={h} onChange={(e) => handleArrayChange('highlights', i, e.target.value)} placeholder="Point Description..." className="bg-zinc-900 border-zinc-800 h-12 rounded-xl" />
-                                                <Button type="button" variant="ghost" size="icon" onClick={() => removeArrayItem('highlights', i)} className="shrink-0 text-zinc-600 hover:text-destructive">
+                                                <Input value={h} onChange={(e) => handleArrayChange('highlights', i, e.target.value)} placeholder="Point Description..." className="bg-zinc-900 text-white border-zinc-800 h-12 rounded-xl" />
+                                                <Button type="button" variant="ghost" size="icon" onClick={() => removeArrayItem('highlights', i)} className="shrink-0 text-white hover:text-destructive">
                                                     <Trash2 className="w-4 h-4" />
                                                 </Button>
                                             </div>
@@ -342,7 +377,7 @@ export function EventForm({ event, onClose, onSuccess }: EventFormProps) {
 
                                 <div className="space-y-4">
                                     <div className="flex items-center justify-between">
-                                        <Label className="text-[11px] font-black text-zinc-500 uppercase tracking-widest pl-1">Prizes/Perks</Label>
+                                        <Label className="text-[11px] font-black text-white uppercase tracking-widest pl-1">Prizes/Perks</Label>
                                         <Button type="button" variant="outline" size="sm" onClick={() => addArrayItem('prizes')} className="h-7 text-[9px] bg-cta/10 border-cta/20 text-cta hover:bg-cta hover:text-white rounded-full">
                                             <Plus className="w-3 h-3 mr-1" /> ADD PERK
                                         </Button>
@@ -350,8 +385,8 @@ export function EventForm({ event, onClose, onSuccess }: EventFormProps) {
                                     <div className="space-y-3">
                                         {formData.prizes?.map((p, i) => (
                                             <div key={i} className="flex gap-2">
-                                                <Input value={p} onChange={(e) => handleArrayChange('prizes', i, e.target.value)} placeholder="Perk details..." className="bg-zinc-900 border-zinc-800 h-12 rounded-xl" />
-                                                <Button type="button" variant="ghost" size="icon" onClick={() => removeArrayItem('prizes', i)} className="shrink-0 text-zinc-600 hover:text-destructive">
+                                                <Input value={p} onChange={(e) => handleArrayChange('prizes', i, e.target.value)} placeholder="Perk details..." className="bg-zinc-900 text-white border-zinc-800 h-12 rounded-xl" />
+                                                <Button type="button" variant="ghost" size="icon" onClick={() => removeArrayItem('prizes', i)} className="shrink-0 text-white hover:text-destructive">
                                                     <Trash2 className="w-4 h-4" />
                                                 </Button>
                                             </div>
@@ -361,8 +396,8 @@ export function EventForm({ event, onClose, onSuccess }: EventFormProps) {
                             </div>
 
                             <div className="space-y-2">
-                                <Label className="text-[10px] font-black text-zinc-500 uppercase pl-1">Full Description</Label>
-                                <Textarea name="description" value={formData.description} onChange={handleChange} placeholder="Enter full production details..." className="bg-zinc-900 border-zinc-800 min-h-[150px] rounded-2xl p-6 italic" required />
+                                <Label className="text-[10px] font-black text-white uppercase pl-1">Full Description</Label>
+                                <Textarea name="description" value={formData.description} onChange={handleChange} placeholder="Enter full production details..." className="bg-zinc-900 text-white border-zinc-800 min-h-[150px] rounded-2xl p-6 italic" required />
                             </div>
                         </div>
                     </div>
@@ -370,11 +405,11 @@ export function EventForm({ event, onClose, onSuccess }: EventFormProps) {
             </div>
 
             {/* Footer */}
-            <div className="p-6 bg-zinc-950 border-t border-zinc-800 flex items-center justify-between shrink-0">
-                <div className="text-[10px] font-bold text-zinc-500 uppercase">SYSTEM READY</div>
-                <div className="flex gap-4">
-                    <Button variant="ghost" onClick={onClose} disabled={loading} className="h-12 px-8 rounded-xl font-bold text-zinc-500">CANCEL</Button>
-                    <Button form="production-form" type="submit" disabled={loading} className="h-12 min-w-[180px] bg-cta hover:bg-cta/90 text-white rounded-xl font-bold">
+            <div className="sticky bottom-0 z-30 p-4 sm:p-6 bg-zinc-950 border-t border-zinc-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
+                <div className="text-[10px] font-bold text-zinc-500 uppercase hidden sm:block">SYSTEM READY</div>
+                <div className="flex gap-3 sm:gap-4 w-full sm:w-auto">
+                    <Button variant="ghost" onClick={onClose} disabled={loading} className="h-11 sm:h-12 px-6 sm:px-8 rounded-xl font-bold text-zinc-500 flex-1 sm:flex-none">CANCEL</Button>
+                    <Button form="production-form" type="submit" disabled={loading} className="h-11 sm:h-12 min-w-[140px] sm:min-w-[180px] bg-cta hover:bg-cta/90 text-white rounded-xl font-bold flex-1 sm:flex-none">
                         {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : (event ? 'UPDATE EVENT' : 'ADD EVENT')}
                     </Button>
                 </div>
