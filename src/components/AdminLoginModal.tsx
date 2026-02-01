@@ -103,7 +103,7 @@ export function AdminLoginModal({ isOpen, onClose }: AdminLoginModalProps) {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="admin@saanvifilms.com"
+                    placeholder="saanviproductionhelp@gmail.com"
                     className="bg-background text-black border-border focus:border-cta focus:ring-cta"
                   />
                 </div>

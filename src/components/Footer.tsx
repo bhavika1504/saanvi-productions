@@ -1,9 +1,8 @@
 import { Film, Instagram, Facebook, Youtube, Mail, Phone, MapPin, ArrowRight } from 'lucide-react';
 
 const socialLinks = [
-  { icon: Instagram, href: 'https://instagram.com/saanvifilms', label: 'Instagram' },
-  { icon: Facebook, href: 'https://facebook.com/saanvifilms', label: 'Facebook' },
-  { icon: Youtube, href: 'https://youtube.com/saanvifilms', label: 'YouTube' },
+  { icon: Instagram, href: 'https://www.instagram.com/saanvifilmandproduction/', label: 'Instagram' },
+  { icon: Facebook, href: 'https://www.facebook.com/people/saanviproduction/61586511233227/', label: 'Facebook' },
 ];
 
 const footerLinks = [
@@ -14,11 +13,7 @@ const footerLinks = [
   { label: 'Contact', href: '#contact' },
 ];
 
-const legalLinks = [
-  { label: 'Privacy Policy', href: '#privacy' },
-  { label: 'Terms of Service', href: '#terms' },
-  { label: 'Support Center', href: '#support' },
-];
+
 
 export function Footer() {
   const scrollToSection = (href: string) => {
@@ -56,7 +51,7 @@ export function Footer() {
                   </span>
                 </div>
               </a>
-              
+
               <p className="text-gray-400 max-w-xs leading-relaxed mb-3 text-xs">
                 Discovering and nurturing new talent across films, ads, and digital entertainment.
               </p>
@@ -100,24 +95,7 @@ export function Footer() {
               </ul>
             </div>
 
-            {/* Legal */}
-            <div>
-              <h4 className="font-semibold text-white mb-2 text-sm">
-                Legal
-              </h4>
-              <ul className="space-y-1">
-                {legalLinks.map((link) => (
-                  <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="text-gray-400 hover:text-white transition-colors duration-300 text-xs footer-link"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
+
 
             {/* Contact */}
             <div>
@@ -127,15 +105,15 @@ export function Footer() {
               <div className="space-y-1">
                 <a href="tel:+919909210605" className="flex items-center gap-1.5 text-gray-400 hover:text-cta transition-colors duration-300 text-xs group">
                   <Phone className="w-3 h-3" />
-                  <span>+91 99092 10605</span>
+                  <span>+91 98765 43210</span>
                 </a>
-                <a href="mailto:info@saanvifilms.com" className="flex items-center gap-1.5 text-gray-400 hover:text-cta transition-colors duration-300 text-xs group">
+                <a href="mailto:saanviproductionhelp@gmail.com" className="flex items-center gap-1.5 text-gray-400 hover:text-cta transition-colors duration-300 text-xs group">
                   <Mail className="w-3 h-3" />
-                  <span>info@saanvifilms.com</span>
+                  <span>saanviproductionhelp@gmail.com</span>
                 </a>
                 <div className="flex items-center gap-1.5 text-gray-400 text-xs">
                   <MapPin className="w-3 h-3" />
-                  <span>Mumbai, India</span>
+                  <span>Saanvi Productions, Ahmedabad, Gujarat</span>
                 </div>
               </div>
             </div>
@@ -144,9 +122,7 @@ export function Footer() {
 
         {/* Ultra Compact Bottom Bar - Centered Copyright */}
         <div className="py-3 border-t border-white/10">
-          <p className="text-gray-500 text-xs text-center">
-            © {new Date().getFullYear()} Saanvi Films & Production. All rights reserved.
-          </p> 
+
         </div>
       </div>
     </footer>

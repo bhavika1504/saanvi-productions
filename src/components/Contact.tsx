@@ -21,8 +21,8 @@ const contactInfo = [
     icon: Instagram,
     studioIcon: Camera,
     label: 'Instagram',
-    value: '@saanviproduction',
-    href: 'https://instagram.com/saanviproduction',
+    value: '@saanvifilmandproduction',
+    href: 'https://www.instagram.com/saanvifilmandproduction/',
     highlight: true,
   },
   {
