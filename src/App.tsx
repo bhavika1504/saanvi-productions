@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { SmoothScroll } from "./components/SmoothScroll";
 import { PageLoader } from "./components/PageLoader";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const Index = lazy(() => import("./pages/Index"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
@@ -29,6 +30,7 @@ const App = () => (
           </Routes>
         </Suspense>
       </BrowserRouter>
+      <SpeedInsights />
     </TooltipProvider>
   </QueryClientProvider>
 );
