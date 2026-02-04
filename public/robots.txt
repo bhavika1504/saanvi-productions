@@ -1,8 +1,8 @@
 # Robots.txt for Saanvi Films & Production
-# https://saanvifilms.com
+# https://saanviproductio.studio
 
 # Sitemap Location
-Sitemap: https://saanvifilms.com/sitemap.xml
+Sitemap: https://saanviproduction.studio/sitemap.xml
 
 # Allow all crawlers
 User-agent: Googlebot
