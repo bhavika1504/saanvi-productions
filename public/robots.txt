@@ -1,8 +1,17 @@
+# Robots.txt for Saanvi Films & Production
+# https://saanvifilms.com
+
+# Sitemap Location
+Sitemap: https://saanvifilms.com/sitemap.xml
+
+# Allow all crawlers
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Twitterbot
 Allow: /
@@ -12,3 +21,8 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+# Disallow admin and private routes
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /*.json$

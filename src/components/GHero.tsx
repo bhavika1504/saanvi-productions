@@ -15,15 +15,22 @@ const GHero = () => {
   };
 
   return (
-    <section id="ghero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section
+      id="ghero"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      aria-label="Hero Section - Saanvi Productions"
+      role="banner"
+    >
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
           src={heroBg}
-          alt="Background"
+          alt="Saanvi Films and Production - Professional film production studio and casting agency in Ahmedabad, Gujarat"
           className="w-full h-full object-cover"
+          loading="eager"
+          fetchPriority="high"
         />
-        <div className="absolute inset-0 bg-black/60" /> {/* Dark overlay for readability */}
+        <div className="absolute inset-0 bg-black/60" aria-hidden="true" /> {/* Dark overlay for readability */}
       </div>
       {/* Animated Gradient Orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -57,6 +64,7 @@ const GHero = () => {
         <p
           className={`font-body text-sm md:text-base tracking-cinematic uppercase text-gold mb-8 transition-all duration-1000 delay-200 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
+          role="doc-subtitle"
         >
           Premium Film Production & Acting Academy
         </p>

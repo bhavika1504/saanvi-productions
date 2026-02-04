@@ -14,7 +14,14 @@ export function About() {
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
 
   return (
-    <section id="about" ref={sectionRef} className="py-24 bg-background relative overflow-hidden">
+    <section
+      id="about"
+      ref={sectionRef}
+      className="py-24 bg-background relative overflow-hidden"
+      aria-labelledby="about-heading"
+      itemScope
+      itemType="https://schema.org/AboutPage"
+    >
       {/* Subtle static background - no animation */}
       <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-accent/3 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2" />
       <div className="absolute top-1/2 right-0 w-[400px] h-[400px] bg-cta/3 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
@@ -31,7 +38,11 @@ export function About() {
               Who We Are
             </span>
 
-            <h2 className="font-display text-4xl sm:text-5xl font-bold text-foreground mb-6">
+            <h2
+              id="about-heading"
+              className="font-display text-4xl sm:text-5xl font-bold text-foreground mb-6"
+              itemProp="headline"
+            >
               Nurturing Dreams,
               <br />
               <span className="text-cta">Creating Stars</span>
@@ -78,7 +89,7 @@ export function About() {
                     <div className="absolute top-4 right-4 opacity-20 group-hover:opacity-40 transition-opacity duration-300">
                       <Icon className="w-8 h-8 text-cta" />
                     </div>
-                    
+
                     {/* Value and label */}
                     <div className="relative">
                       <div className="font-display text-4xl font-bold text-foreground mb-1.5 tracking-tight">

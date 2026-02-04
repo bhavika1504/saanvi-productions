@@ -1,7 +1,7 @@
 import { motion, useInView } from 'framer-motion';
 import { Film, Tv, Camera, MonitorPlay, Clapperboard, Star, Mic, ArrowRight } from 'lucide-react';
 import { useRef, useState } from 'react';
-import { CastingFormModal} from './CastingFormModal';
+import { CastingFormModal } from './CastingFormModal';
 // Service list with more natural descriptions
 const services = [
   {
@@ -82,7 +82,14 @@ export function Services() {
 
   return (
     <>
-      <section id="services" ref={sectionRef} className="py-20 bg-gradient-to-b from-background via-secondary/20 to-background relative">
+      <section
+        id="services"
+        ref={sectionRef}
+        className="py-20 bg-gradient-to-b from-background via-secondary/20 to-background relative"
+        aria-labelledby="services-heading"
+        itemScope
+        itemType="https://schema.org/ItemList"
+      >
         {/* Subtle background elements */}
         <div className="absolute top-1/4 right-0 w-72 h-72 bg-accent/8 rounded-full blur-2xl" />
         <div className="absolute bottom-1/4 left-0 w-80 h-80 bg-cta/6 rounded-full blur-2xl" />
@@ -98,12 +105,16 @@ export function Services() {
             <div className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-cta bg-cta/10 rounded-full mb-6 border border-cta/20">
               What We Do
             </div>
-            
-            <h2 className="font-display text-4xl sm:text-5xl font-bold text-foreground mb-6">
+
+            <h2
+              id="services-heading"
+              className="font-display text-4xl sm:text-5xl font-bold text-foreground mb-6"
+              itemProp="name"
+            >
               Your Gateway to{' '}
               <span className="text-cta">Entertainment</span>
             </h2>
-            
+
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               We provide comprehensive opportunities for aspiring artists to showcase
               their talent across multiple entertainment platforms.
@@ -129,22 +140,27 @@ export function Services() {
                   }}
                   className="group scroll-mt-24"
                 >
-                  <div className="bg-card rounded-lg overflow-hidden border border-border/50 hover:border-border transition-all duration-300 hover:shadow-lg">
+                  <article
+                    className="bg-card rounded-lg overflow-hidden border border-border/50 hover:border-border transition-all duration-300 hover:shadow-lg"
+                    itemScope
+                    itemType="https://schema.org/Service"
+                    itemProp="itemListElement"
+                  >
                     {/* Image */}
                     <div className="relative h-48 overflow-hidden">
                       <img
                         src={service.image}
-                        alt={service.title}
+                        alt={`${service.title} - ${service.description.substring(0, 50)}...`}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         loading="lazy"
+                        itemProp="image"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                      
+
                       {/* Service number */}
                       <div className="absolute top-3 right-3">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold text-white ${
-                          isOrange ? 'bg-cta' : 'bg-accent'
-                        }`}>
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold text-white ${isOrange ? 'bg-cta' : 'bg-accent'
+                          }`}>
                           {String(index + 1).padStart(2, '0')}
                         </div>
                       </div>
@@ -154,17 +170,16 @@ export function Services() {
                     <div className="p-6">
                       {/* Icon and title */}
                       <div className="flex items-center gap-3 mb-3">
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                          isOrange ? 'bg-cta/10 text-cta' : 'bg-accent/10 text-accent'
-                        }`}>
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${isOrange ? 'bg-cta/10 text-cta' : 'bg-accent/10 text-accent'
+                          }`}>
                           <Icon className="w-5 h-5" />
                         </div>
-                        <h3 className="font-display text-xl font-semibold text-foreground">
+                        <h3 className="font-display text-xl font-semibold text-foreground" itemProp="name">
                           {service.title}
                         </h3>
                       </div>
 
-                      <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+                      <p className="text-muted-foreground text-sm leading-relaxed mb-4" itemProp="description">
                         {service.description}
                       </p>
 
@@ -183,17 +198,16 @@ export function Services() {
                       {/* Apply button */}
                       <button
                         onClick={() => handleApply(service.title)}
-                        className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-300 ${
-                          isOrange
+                        className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-300 ${isOrange
                             ? 'bg-cta/10 text-cta hover:bg-cta hover:text-white border border-cta/20 hover:border-cta'
                             : 'bg-accent/10 text-accent hover:bg-accent hover:text-white border border-accent/20 hover:border-accent'
-                        }`}
+                          }`}
                       >
                         Apply Now
                         <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                       </button>
                     </div>
-                  </div>
+                  </article>
                 </motion.div>
               );
             })}
